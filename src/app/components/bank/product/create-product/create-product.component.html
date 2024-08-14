@@ -1,0 +1,120 @@
+<div [ngClass]="{ 'card-body': mostrar }">
+  <div class="container-fluid mt--7">
+    <div class="card shadow">
+      <div class="card-header border-0">
+        <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+          <h6 class="heading-small text-muted mb-4">Información del producto financiero</h6>
+          <hr>
+          <div class="pl-lg-4">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="reference">Referencia</label>
+                  <input
+                    [(ngModel)]="product.reference"
+                    [disabled]="!mostrar"
+                    [required]="true"
+                    type="text"
+                    class="form-control form-control-alternative"
+                    placeholder="Referencia del producto"
+                    name="reference"
+                    required
+                    minlength="3"
+                    maxlength="10"
+                    #reference="ngModel"
+                  />
+                  <div *ngIf="reference.invalid && (reference.dirty || reference.touched)" class="invalid-feedback">
+                    <div *ngIf="reference.errors?.['required']">Referencia es requerido.</div>
+                    <div *ngIf="reference.errors?.['minlength']">Referencia debe tener al menos 3 caracteres.</div>
+                    <div *ngIf="reference.errors?.['maxlength']">Referencia no puede tener más de 10 caracteres.</div>
+                    <div *ngIf="reference.errors?.['exists']">Referencia no válido.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="name">Nombre</label>
+                  <input [(ngModel)]="product.name" type="text" class="form-control form-control-alternative" placeholder="Nombre del producto" minlength="5" maxlength="100" name="name" required #name="ngModel" />
+                  <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
+                    <div *ngIf="name.errors?.['required']">Nombre es requerido.</div>
+                    <div *ngIf="name.errors?.['minlength']">Nombre debe tener al menos 5 caracteres.</div>
+                    <div *ngIf="name.errors?.['maxlength']">Nombre no puede tener más de 100 caracteres.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pl-lg-4">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="description">Descripción</label>
+                  <input [(ngModel)]="product.description" type="text" minlength="10" maxlength="200" class="form-control form-control-alternative" placeholder="Descripción del producto" name="description" required #description="ngModel" />
+                  <div *ngIf="description.invalid && (description.dirty || description.touched)" class="invalid-feedback">
+                    <div *ngIf="description.errors?.['required']">Descripción es requerida.</div>
+                    <div *ngIf="description.errors?.['minlength']">Descripción debe tener al menos 10 caracteres.</div>
+                    <div *ngIf="description.errors?.['maxlength']">Descripción no puede tener más de 200 caracteres.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="logo">Logo</label>
+                  <input [(ngModel)]="product.logo" type="text" class="form-control form-control-alternative" placeholder="Logo del producto" name="logo" required #logo="ngModel" />
+                  <div *ngIf="logo.invalid && (logo.dirty || logo.touched)" class="invalid-feedback">
+                    <div *ngIf="logo.errors?.['required']">Logo es requerido.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pl-lg-4">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-control-label">Fecha de liberación</label>
+                  <div class="input-group input-group-alternative">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                    </div>
+                    <input type="date" class="form-control" [(ngModel)]="product.date_release" name="date_release" required #date_release="ngModel" [min]="minDate" (ngModelChange)="updateRevisionDate()" />
+                    <div *ngIf="date_release.invalid && (date_release.dirty || date_release.touched)" class="invalid-feedback">
+                      <div *ngIf="date_release.errors?.['required']">Fecha de liberación es requerida.</div>
+                      <div *ngIf="date_release.errors?.['min']">La fecha debe ser igual o mayor a la fecha actual.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-control-label">Fecha de revisión</label>
+                  <div class="input-group input-group-alternative">
+                    <input type="date" class="form-control" [(ngModel)]="product.date_revision" name="date_revision" required disabled />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pl-lg-4">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group text-right">
+                  <button type="button" (click)="resetForm(f)" class="btn btn-secondary">
+                    <i class="fa fa-undo" aria-hidden="true"></i> Reiniciar
+                  </button>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <button type="submit" class="btn btn-save">
+                    <i class="fa fa-save"></i> Enviar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

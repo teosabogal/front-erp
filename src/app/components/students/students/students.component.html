@@ -1,0 +1,119 @@
+<div class="card-body">
+  <!-- Page content -->
+  <div class="container-fluid mt--7">
+    <div class="row">
+      <div class="col">
+        <div class="card shadow">
+          <div class="card-header border-0">
+            <h3 class="mb-0">Estudiantes registrados</h3>
+          </div>
+          <div class="header-controls">
+            <div class="search-box-container">
+              <div class="search-box">
+                <input type="search" placeholder="Búsqueda por nombre..." (keyup)="buscarEstudiantesArray(termino.value)" #termino />
+                <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+            <button class="btn btn-primary agregar-btn" [routerLink]="['/create-student']">Agregar</button>
+          </div>
+          <div *ngIf="!cargando && paginatedArray.length > 0">
+
+            <br>
+            <div  class="table">
+              <table class="table align-items-center table-flush" [hidden]="!cargando && eArray.length === 0">
+                <thead class="thead-light">
+                  <tr >
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Nombre</th>
+                    <th scope="col" class="text-center">Fecha nacimiento</th>
+                    <th scope="col" class="text-center">Experiencia</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let e of paginatedArray; let i = index">
+                    <td class="text-center">
+                      {{i+1}}.
+                    </td>
+                    <td class="text-center">
+                      <span>{{e.nombre}} </span>
+                    </td>
+                    <td class="text-center">
+                      {{e.fecha_nacimiento | date}}
+                    </td>
+                    <td class="text-center">
+                      {{e.experiencia}}
+                    </td>
+                    <td class="text-right">
+                      <div ngbDropdown placement="bottom-right">
+                        <a class="btn btn-sm btn-icon-only text-dark" ngbDropdownToggle>
+                          <i class="fa fa-ellipsis-v"></i>
+                        </a>
+                        <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                          <a class="dropdown-item" (click)="open(content,e)" href="javascript:void(0)">Modificar &nbsp;<img src="assets/img/pencil.png" width="15" height="15" alt=""></a>
+                          <a class="dropdown-item" (click)="eliminar(e)" href="javascript:void(0)">Eliminar &nbsp;<img src="assets/img/delete.png" width="15" height="15"></a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="alert alert-dark text-center mt-3 animated fadeIn faster" *ngIf="!cargando && eArray.length === 0">
+            <h4 class="alert-heading">No hay datos</h4>
+            <p>
+                <i class="fa fa-exclamation fa-2x"></i>
+            </p>
+          </div>
+
+          <div class="alert alert-info text-center mt-3 animated fadeIn faster" *ngIf="cargando">
+            <h4 class="alert-heading">Cargando</h4>
+            <p>
+                <i class="fa fa-sync-alt fa-spin fa-2x"></i>
+            </p>
+            <p class="mb-0">
+                Espere por favor
+            </p>
+          </div>
+          <div class="footer">
+            <div class="results-count">{{filteredArray.length}} Resultados</div>
+            <div class="results-select">
+              <label for="results-per-page">Resultados por página:</label>
+              <select id="results-per-page" [(ngModel)]="resultsPerPage" (change)="onResultsPerPageChange()">
+                <option *ngFor="let option of [5, 10, 20]" [value]="option">{{ option }}</option>
+              </select>
+            </div>
+          </div>
+
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" href="javascript:void(0)" (click)="goToPage(currentPage - 1)"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
+              </li>
+              <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [class.active]="currentPage === i + 1">
+                <a class="page-link" href="javascript:void(0)" (click)="goToPage(i + 1)">{{ i + 1 }}</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" href="javascript:void(0)" (click)="goToPage(currentPage + 1)"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+              </li>
+            </ul>
+          </nav>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-create-students [mostrar]="false" [estudiante]="estudiante"></app-create-students>
+    </div>
+  </ng-template>
